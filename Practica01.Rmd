@@ -74,13 +74,11 @@ print("Valor medio de Bytes")
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
 ```{r , echo=FALSE}
 #dim(epa_http)
-url_edu <- epa_http[grepl("*.edu", "Origen", ignore.case = TRUE), ]
+url_edu <- epa_http[grepl(".edu$", epa_http$Origen, ignore.case = FALSE), ]
 
-# Count the number of rows in the filtered data frame
-numero_nombres_por <- nrow(url_edu)
+numero_edu <- nrow(url_edu)
 
-# Print the count
-print(numero_nombres_por)
+print(numero_edu)
 ```
 
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
