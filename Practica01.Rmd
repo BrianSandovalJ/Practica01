@@ -1,0 +1,49 @@
+---
+title: "Practica 1"
+author: "Brian Sandoval"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr) 
+epa_http <- read_table("C:/Users/briansj/Documents/Trabajo01/epa-http.csv", col_names = FALSE) 
+colnames(epa_http) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
+View(epa_http)
+
+```
+
+## Practica 01 - Data Science
+
+***Pregunta 01:***
+
+1.- Dado un registro de vehículos que circulan por una autopista, disponemos de su marca y modelo, país de matriculación, y tipo de vehículo (por número de ruedas). Con tal de ajustar precios de los peajes, ¿Cuántos vehículos tenemos por tipo? ¿Cuál es el tipo más frecuente? ¿De qué países tenemos más vehículos?
+
+La clasificación de la pregunta es predictiva, puesto que, de una data de frecuencia de vehículos, se puede predecir los tipos de valores nuevos que usan las personas y de igual forma es clasificada descriptiva por que se desea saber el número de países recurrentes que circulan en la autopista.
+
+2.- Dado un registro de visualizaciones de un servicio de video-on-demand, donde disponemos de los datos del usuario, de la película seleccionada, fecha de visualización y categoría de la película, queremos saber ¿Hay alguna preferencia en cuanto a género literario según los usuarios y su rango de edad?
+
+La clasificación de la pregunta es exploratoria, puesto que se esta preguntando sobre la preferencia del genero de los usuarios. Ello conlleva en explorar dentro de la base de datos sobre el gusto de los usuarios.
+
+3.- Dado un registro de peticiones a un sitio web, vemos que las peticiones que provienen de una red de telefonía concreta acostumbran a ser incorrectas y provocarnos errores de servicio. ¿Podemos determina si en el futuro, los próximos mensajes de esa red seguirán dando problemas? ¿Hemos notado el mismo efecto en otras redes de telefonía?
+
+La clasificación de la pregunta es casuales, porque se requiere ver los resultados de los mensajes futuros en caso sigan dando problemas o no. De igual forma es exploratoria porque se requiere investigar si existe relación con otras redes de telefonía.
+
+4.- Dado los registros de usuarios de un servicio de compras por internet, los usuarios pueden agruparse por preferencias de productos comprados. Queremos saber si ¿Es posible que, dado un usuario al azar y según su historial, pueda ser directamente asignado a un o diversos grupos?
+
+La clasificación de la pregunta es predictiva, por que de acuerdo a los datos obtenidos se requiere revisar si puede ser asignado a uno o diversos grupos de acuerdo al historial de productos comprados.
+
+**Pregunta 02:**
+
+Considera el siguiente escenario: Sabemos que un usuario de nuestra red empresarial ha estado usando esta para fines no relacionados con el trabajo, como por ejemplo tener un servicio web no autorizado abierto a la red (otros usuarios tienen servicios web activados y autorizados). No queremos tener que rastrear los puertos de cada PC, y sabemos que la actividad puede haber cesado. Pero podemos acceder a los registros de conexiones TCP de cada máquina de cada trabajador (hacia donde abre conexión un PC concreto). Sabemos que nuestros clientes se conectan desde lugares remotos de forma legítima, como parte de nuestro negocio, y que un trabajador puede haber habilitado temporalmente servicios de prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, con tal de explicarles que por favor no expongan nuestros sistemas sin permiso de los operadores o la dirección.
+
+Explica con detalle cómo se podría proceder al análisis y resolución del problema mediante Data Science, indicando de donde se obtendrían los datos, qué tratamiento deberían recibir, qué preguntas hacerse para resolver el problema, qué datos y gráficos se obtendrían, y cómo se comunicarían estos.
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
