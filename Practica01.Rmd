@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(readr) 
-epa_http <- read_table("C:/Users/briansj/Documents/Trabajo01/epa-http.csv", col_names = TRUE) 
+epa_http <- read_table("C:/Users/briansj/Documents/Trabajo01/epa-http.csv", col_names = FALSE) 
 colnames(epa_http) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
 View(epa_http)
 
@@ -53,6 +53,11 @@ Explica con detalle cómo se podría proceder al análisis y resolución del pro
 
 ```{r , echo=FALSE}
 #dim(epa_http)
+#COD 302: un recurso se ha movido temporalmente a una ubicación diferente a la que se está accediendo
+#COD 404: no se encuentra una página web
+#COD 403: GoogleBot está intentando ingresar a una página para la cual no tiene permisos
+#COD 501: el servidor no soporta la funcionalidad necesaria para satisfacer la solicitud
+
 print("Nùmero de filas")
 nrow(epa_http)
 print("Nùmero de Columnas")
@@ -67,6 +72,16 @@ print("Valor medio de Bytes")
 ```
 
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
+```{r , echo=FALSE}
+#dim(epa_http)
+url_edu <- epa_http[grepl("*.edu", "Origen", ignore.case = TRUE), ]
+
+# Count the number of rows in the filtered data frame
+numero_nombres_por <- nrow(url_edu)
+
+# Print the count
+print(numero_nombres_por)
+```
 
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
 
