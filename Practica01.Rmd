@@ -56,6 +56,7 @@ Explica con detalle cómo se podría proceder al análisis y resolución del pro
 #COD 302: un recurso se ha movido temporalmente a una ubicación diferente a la que se está accediendo
 #COD 404: no se encuentra una página web
 #COD 403: GoogleBot está intentando ingresar a una página para la cual no tiene permisos
+#COD 400:tu navegador envía una solicitud al servidor del sitio web y el servidor no puede procesar o reconocer la solicitud
 #COD 501: el servidor no soporta la funcionalidad necesaria para satisfacer la solicitud
 
 print("Nùmero de filas")
@@ -68,7 +69,18 @@ ncol(epa_http)
 ```{r , echo=FALSE}
 #dim(epa_http)
 print("Valor medio de Bytes")
-#mean(epa_http$Bytes)
+tabla_flot <- epa_http
+colnames(tabla_flot) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
+#tabla_flot$Bytes[tabla_flot$Bytes == "-" & tabla_flot$Respuesta == "404"] <- 0
+#tabla_flot$Bytes[tabla_flot$Bytes == "-" & tabla_flot$Respuesta == "302"] <- 1
+#tabla_flot$Bytes[tabla_flot$Bytes == "-" & tabla_flot$Respuesta == "400"] <- 2
+#tabla_flot$Bytes[tabla_flot$Bytes == "-" & tabla_flot$Respuesta == "403"] <- 2
+#tabla_flot$Bytes[tabla_flot$Bytes == "-" & tabla_flot$Respuesta == "501"] <- 100
+#tabla_flot[is.na(tabla_flot)] <- 0
+suppressWarnings(bytes<- as.numeric(tabla_flot$Bytes))
+suppressWarnings(bytes[is.na(bytes)] <- 0)
+suppressWarnings(aa <- mean(bytes))
+suppressWarnings(print(aa))
 ```
 
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
@@ -84,14 +96,30 @@ print(numero_edu)
 
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
 ```{r , echo=FALSE}
-#dim(epa_http)
-url_GET <- epa_http[grepl("GET", epa_http$`Tipo Peticion`, ignore.case = FALSE), ]
-Valor_max <- max(url_GET$Bytes)
-
-print(Valor_max)
+#Juan
 ```
 
 **Pregunta 4:** De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+```{r , echo=FALSE}
+#dim(epa_http)
+#length(unique(epa_http$Origen[grepl(".edu", epa_http$Origen)]))
+tablaflot2 <- epa_http
+#tablaflot2$Bytes[tablaflot2$Bytes == "-" & tablaflot2$Respuesta == "404"] <- 0
+#tablaflot2$Bytes[tablaflot2$Bytes == "-" & tablaflot2$Respuesta == "302"] <- 1
+#tablaflot2$Bytes[tablaflot2$Bytes == "-" & tablaflot2$Respuesta == "400"] <- 2
+#tablaflot2$Bytes[tablaflot2$Bytes == "-" & tablaflot2$Respuesta == "403"] <- 2
+#tablaflot2$Bytes[tablaflot2$Bytes == "-" & tablaflot2$Respuesta == "501"] <- 100
+url_edu <- tablaflot2[grepl(".edu$", tablaflot2$Origen, ignore.case = FALSE), ]
+descargas_txt <-url_edu[grepl(".txt$", url_edu$URL, ignore.case = FALSE), ]
+
+#suppressWarnings(bytes<- as.numeric(descargas_txt$Bytes))
+suppressWarnings(bytes<- as.numeric(descargas_txt$Bytes))
+suppressWarnings(bytes[is.na(bytes)])
+suppressWarnings(suma <- mean(bytes))
+suppressWarnings(numero_sum <- sum(suma))
+
+suppressWarnings(print(numero_sum))
+```
 
 **Pregunta 5:** Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
 ```{r , echo=FALSE}
