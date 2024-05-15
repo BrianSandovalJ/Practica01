@@ -74,7 +74,8 @@ print("Valor medio de Bytes")
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
 ```{r , echo=FALSE}
 #dim(epa_http)
-url_edu <- epa_http[grepl(".edu$", epa_http$Origen, ignore.case = FALSE), ]
+#length(unique(epa_http$Origen[grepl(".edu", epa_http$Origen)]))
+url_edu <- epa_http[grepl(".edu", epa_http$Origen, ignore.case = FALSE), ]
 
 numero_edu <- nrow(url_edu)
 
@@ -82,9 +83,33 @@ print(numero_edu)
 ```
 
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+```{r , echo=FALSE}
+#dim(epa_http)
+url_GET <- epa_http[grepl("GET", epa_http$`Tipo Peticion`, ignore.case = FALSE), ]
+Valor_max <- max(url_GET$Bytes)
+
+print(Valor_max)
+```
 
 **Pregunta 4:** De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
 
 **Pregunta 5:** Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+```{r , echo=FALSE}
+#dim(epa_http)
+#length(epa_http$URL[grepl("^/$", epa_http$URL)])
+url_5 <- epa_http[grepl("^/$", epa_http$URL, ignore.case = FALSE), ]
+
+numero_total5 <- nrow(url_5)
+
+print(numero_total5)
+```
 
 **Pregunta 6:** Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+```{r , echo=FALSE}
+#dim(epa_http)
+url_http <- epa_http[!grepl("HTTP/0.2", epa_http$Version, ignore.case = FALSE), ]
+
+numero_totalhttp <- nrow(url_http)
+
+print(numero_totalhttp)
+```
