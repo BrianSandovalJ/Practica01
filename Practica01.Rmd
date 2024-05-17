@@ -66,6 +66,7 @@ ncol(epa_http)
 ```
 
 2\. Valor medio de la columna Bytes
+
 ```{r , echo=FALSE}
 #dim(epa_http)
 print("Valor medio de Bytes")
@@ -84,6 +85,7 @@ suppressWarnings(print(aa))
 ```
 
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
+
 ```{r , echo=FALSE}
 #dim(epa_http)
 #length(unique(epa_http$Origen[grepl(".edu", epa_http$Origen)]))
@@ -95,11 +97,13 @@ print(numero_edu)
 ```
 
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
 ```{r , echo=FALSE}
 #Juan
 ```
 
 **Pregunta 4:** De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
 ```{r , echo=FALSE}
 #dim(epa_http)
 #length(unique(epa_http$Origen[grepl(".edu", epa_http$Origen)]))
@@ -122,6 +126,7 @@ suppressWarnings(print(numero_sum))
 ```
 
 **Pregunta 5:** Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
 ```{r , echo=FALSE}
 #dim(epa_http)
 #length(epa_http$URL[grepl("^/$", epa_http$URL)])
@@ -133,6 +138,7 @@ print(numero_total5)
 ```
 
 **Pregunta 6:** Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+
 ```{r , echo=FALSE}
 #dim(epa_http)
 url_http <- epa_http[!grepl("HTTP/0.2", epa_http$Version, ignore.case = FALSE), ]
