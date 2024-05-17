@@ -70,19 +70,17 @@ url_edu <- epa_http[grepl(".edu", epa_http$Origen, ignore.case = FALSE), ]
 numero_edu <- nrow(url_edu)
 numero_edu` IPs.
 
-**Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"? RSPT: El mayor volumen es a las XXXXXXXXXXXXX hrs.
-
-```{r , echo=FALSE}
+**Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"? RSPT: El mayor volumen es `r 
 tablaflot3 <- epa_http
-informacion_GET <- tablaflot3[grepl("GET", tablaflot3$`Tipo Peticion`, ignore.case = FALSE), ]
-dia_hora <- substr(informacion_GET$Tiempo,5,6)
+colnames(tablaflot3) <- c("Origen","Tiempo","Peti", "URL", "Version","Respuesta","Bytes")
+totalGET <- tablaflot3[grepl("GET", tablaflot3$Peti, ignore.case = FALSE), ]
+dia_hora <- substr(totalGET$Tiempo,5,6)
 tabla_dia <- table(dia_hora)
 tabla_ordenada <- sort(tabla_dia, decreasing = TRUE)
 indice_max <- which.max(tabla_ordenada)
 hora_max <- names(tabla_ordenada)[indice_max]
 hora_max
-#Juan
-```
+` hrs.
 
 **Pregunta 4:** De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
 
@@ -106,7 +104,7 @@ numero_total5
 
 **Pregunta 6:** Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
 
-RSPT: Son el total `r 
+RSPT: Son en total `r 
 url_http <- epa_http[!grepl("HTTP/0.2", epa_http$Version, ignore.case = FALSE), ]
 numero_totalhttp <- nrow(url_http)
 numero_totalhttp
