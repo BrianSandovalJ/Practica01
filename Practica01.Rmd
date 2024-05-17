@@ -53,24 +53,36 @@ En la información guardada debe de estar en un identificador único, nombre com
 
 1\. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
 
-```{r , echo=FALSE}
+El data frame tiene `r nrow(epa_http)` filas y `r ncol(epa_http)` columnas.
+
+```{r warning=FALSE, , echo=FALSE}
+#dim(epa_http)
+
+
+#print("Nùmero de filas")
+#nrow(epa_http)
+#num_fila <- 
+#print("Nùmero de Columnas")
+#ncol(epa_http)
+```
+
+2\. Valor medio de la columna Bytes
+
+El valos medio es: `r tabla_flot <- epa_http
+colnames(tabla_flot) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
+suppressWarnings(bytes<- as.numeric(tabla_flot$Bytes))
+suppressWarnings(bytes[is.na(bytes)] <- 0)
+suppressWarnings(total_bytes <- mean(bytes))
+total_bytes
+`
+
+```{r pregunta02, echo=FALSE}
 #dim(epa_http)
 #COD 302: un recurso se ha movido temporalmente a una ubicación diferente a la que se está accediendo
 #COD 404: no se encuentra una página web
 #COD 403: GoogleBot está intentando ingresar a una página para la cual no tiene permisos
 #COD 400:tu navegador envía una solicitud al servidor del sitio web y el servidor no puede procesar o reconocer la solicitud
 #COD 501: el servidor no soporta la funcionalidad necesaria para satisfacer la solicitud
-
-print("Nùmero de filas")
-nrow(epa_http)
-print("Nùmero de Columnas")
-ncol(epa_http)
-```
-
-2\. Valor medio de la columna Bytes
-
-```{r , echo=FALSE}
-#dim(epa_http)
 print("Valor medio de Bytes")
 tabla_flot <- epa_http
 colnames(tabla_flot) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
@@ -82,8 +94,9 @@ colnames(tabla_flot) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","R
 #tabla_flot[is.na(tabla_flot)] <- 0
 suppressWarnings(bytes<- as.numeric(tabla_flot$Bytes))
 suppressWarnings(bytes[is.na(bytes)] <- 0)
-suppressWarnings(aa <- mean(bytes))
-suppressWarnings(print(aa))
+suppressWarnings(total_bytes <- mean(bytes))
+#suppressWarnings(print(aa))
+total_bytes
 ```
 
 **Pregunta 2:** De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
@@ -101,6 +114,14 @@ print(numero_edu)
 **Pregunta 3:** De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
 
 ```{r , echo=FALSE}
+tablaflot3 <- epa_http
+informacion_GET <- tablaflot3[grepl("GET", tablaflot3$`Tipo Peticion`, ignore.case = FALSE), ]
+dia_hora <- substr(informacion_GET$Tiempo,5,6)
+tabla_dia <- table(dia_hora)
+tabla_ordenada <- sort(tabla_dia, decreasing = TRUE)
+indice_max <- which.max(tabla_ordenada)
+hora_max <- names(tabla_ordenada)[indice_max]
+hora_max
 #Juan
 ```
 
