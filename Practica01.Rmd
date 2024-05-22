@@ -44,6 +44,7 @@ Explica con detalle cómo se podría proceder al análisis y resolución del pro
 
 En la información guardada debe de estar en un identificador único, nombre completo, apellidos, número de teléfono y correo, nacionalidad y su número de identificación. Teniendo esos datos básicos se puede crear un usuario y contraseña mediante el AD hacia los servicios de Internet asociados en la red empresarial, con ello se sabe mediante el registro asociado sobre la IP, puerto, contraseña, hora y fecha y el usuario que realiza esta comunicación. Se analiza mediante el registro de comunicación que realiza a qué sitio web y a dirección que usa. Teniendo esos usuarios, se realiza un protocolo de roles para identificar los permisos que se brinda y ejecuta dado poco a poco brindado.
 
+
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
