@@ -210,7 +210,7 @@ perform_kmeans <- function(k) {
   kmeans_results <- kmeans(data_onehot[, -1], centers = k)
 
   # Assign cluster labels to data points
-  data_onehot$cluster <- kmeans_results$cluster
+  data_onehot$cluster <- as.factor(kmeans_results$cluster)
 
   # Print the cluster labels
   #print(data_onehot$cluster)
