@@ -194,8 +194,6 @@ tablaji$Bytes <- as.numeric(tablaji$Bytes)
 
 tablaji$Peti <- as.factor(tablaji$`Tipo Peticion`)
 
-
-
 #tablaji_one_hot <- one_hot(as.data.table(tablaji), sparsifyNAs = TRUE)
 #data_onehot <- one_hot(tablaji_one_hot)
 data_onehot <- one_hot(as.data.table(tablaji), sparsifyNAs = TRUE)
@@ -203,6 +201,7 @@ data_onehot <- one_hot(as.data.table(tablaji), sparsifyNAs = TRUE)
 data_onehot$Origen <- NULL
 data_onehot$Tiempo <- NULL
 data_onehot$`Tipo Peticion` <- NULL
+data_onehot$resourceLenght <- nchar(data_onehot$URL)
 data_onehot$URL <- NULL
 data_onehot$Version <- NULL
 
@@ -214,11 +213,21 @@ perform_kmeans <- function(k) {
   data_onehot$cluster <- kmeans_results$cluster
 
   # Print the cluster labels
-  print(data_onehot$cluster)
+  #print(data_onehot$cluster)
+  
 }
 
 perform_kmeans(2)
-summary(data_onehot)
+#summary(data_onehot)
+
+kmeans_results <- kmeans(data_onehot[, -1], centers = 3)
+
+# Assign cluster labels to data points
+data_onehot$cluster <- kmeans_results$cluster
+
+ggplot2::ggplot(data_onehot, aes(x = data_onehot$resourceLenght, data_onehot$Bytes, colour = data_onehot$cluster)) +
+    geom_point(alpha = 0.2) +
+    ggtitle(paste("EPA server logs K-means analysis", 3, "cluster"))
 ```
 
 2/. Representadvisualmenteengráficosdetiposcatterplotelresultadode vuestros clústering y interpretad el resultado obtenido.
