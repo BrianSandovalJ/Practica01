@@ -13,9 +13,14 @@ library(tidyverse)
 library(htmlTable)
 library(lubridate)
 library(ggplot2)
+library(mltools)
+library(data.table)
+library(mltools)
+
 #epa_http <- read_table("C:/Users/briansj/Documents/Trabajo01/epa-http.csv", col_names = FALSE)
 epa_http <- read_table("~/Downloads/Practica01-main/epa-http.csv", col_names = FALSE)
 colnames(epa_http) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
+epa_http_one_hot <- one_hot(as.data.table(epa_http), sparsifyNAs = TRUE)
 #View(epa_http)
 
 ```
@@ -172,10 +177,56 @@ ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
   labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
 ```
 
-**Visualización de Resultados**
+**Clústering de datos**
 
-1/. Generar al menos 2 gráficos distintos que permitan visualizar alguna característica relevante de los datos analizados.
+1/. Utilizando un algoritmo de aprendizaje no supervisado, realizad un análisis de clústering con k-means para los datos del servidor.
 
 ```{r , echo=T}
-#barplot(tablaFlot4$Version, names.arg = tablaFlot4$Respuesta)
+tablaji <- epa_http_one_hot  # Assuming tablaFlot4 is your data frame
+
+
+tablaji$Bytes <- ifelse(tablaji$Respuesta == 404, 0, tablaji$Bytes)
+tablaji$Bytes <- ifelse(tablaji$Respuesta == 302, 1, tablaji$Bytes)
+tablaji$Bytes <- ifelse(tablaji$Respuesta == 403, 2, tablaji$Bytes)
+tablaji$Bytes <- ifelse(tablaji$Respuesta == 501, 3, tablaji$Bytes)
+tablaji$Bytes <- ifelse(tablaji$Respuesta == 400, 4, tablaji$Bytes)
+tablaji$Bytes <- as.numeric(tablaji$Bytes)
+
+#tablaji_one_hot <- one_hot(as.data.table(tablaji), sparsifyNAs = TRUE)
+tablaji$Peti <- as.factor(tablaji$`Tipo Peticion`)
+#tablaji$url_length <- nchar(tablaji_one_hot$URL)
+
+data_onehot <- one_hot(tablaji)
+
+perform_kmeans <- function(k) {
+  # Perform k-means clustering using the one-hot encoded data
+  kmeans_results <- kmeans(data_onehot[, -1], centers = k)
+
+  # Assign cluster labels to data points
+  data_onehot$cluster <- kmeans_results$cluster
+
+  # Print the cluster labels
+  print(data_onehot$cluster)
+}
+
+perform_kmeans(1)
+
+summary(tablaji)
+
+# Impute missing values using missForest (optional, consider built-in R functions as well)
+if (!require("missForest")) install.packages("missForest")
+library(missForest)
+
+# Assuming 'tablaji' is your data frame
+
+# Convert 'Tiempo' column to factor (if applicable)
+tablaji$Tiempo <- factor(tablaji$Tiempo)
+
+
+```
+
+2/. Representadvisualmenteengráficosdetiposcatterplotelresultadode vuestros clústering y interpretad el resultado obtenido.
+
+```{r , echo=T}
+
 ```
