@@ -214,20 +214,15 @@ perform_kmeans <- function(k) {
 
   # Print the cluster labels
   #print(data_onehot$cluster)
-  
+  ggplot2::ggplot(data_onehot, aes(x = data_onehot$resourceLenght, data_onehot$Bytes, colour = data_onehot$cluster)) +
+    geom_point(alpha = 0.2) +
+    ggtitle(paste("EPA server logs K-means analysis", k, "cluster"))
 }
 
-perform_kmeans(2)
+perform_kmeans(3)
 #summary(data_onehot)
 
-kmeans_results <- kmeans(data_onehot[, -1], centers = 3)
 
-# Assign cluster labels to data points
-data_onehot$cluster <- kmeans_results$cluster
-
-ggplot2::ggplot(data_onehot, aes(x = data_onehot$resourceLenght, data_onehot$Bytes, colour = data_onehot$cluster)) +
-    geom_point(alpha = 0.2) +
-    ggtitle(paste("EPA server logs K-means analysis", 3, "cluster"))
 ```
 
 2/. Representadvisualmenteengráficosdetiposcatterplotelresultadode vuestros clústering y interpretad el resultado obtenido.
