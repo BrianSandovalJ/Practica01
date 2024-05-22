@@ -12,6 +12,7 @@ library(readr)
 library(tidyverse)
 library(htmlTable)
 library(lubridate)
+library(ggplot2)
 #epa_http <- read_table("C:/Users/briansj/Documents/Trabajo01/epa-http.csv", col_names = FALSE)
 epa_http <- read_table("~/Downloads/Practica01-main/epa-http.csv", col_names = FALSE)
 colnames(epa_http) <- c("Origen","Tiempo","Tipo Peticion", "URL", "Version","Respuesta","Bytes")
@@ -122,8 +123,9 @@ numero_totalhttp
 ```{r , echo=T}
 tablaFlot4 <- epa_http
 colnames(tablaFlot4) <- c("Origen","Tiempo","Peti", "URL", "Version","Respuesta","Bytes")
-tablaFlot4$Dia <- substr(tablaFlot4$Tiempo, 2, 3)
-tablaFlot4$Hora <- substr(tablaFlot4$Tiempo, 5, 12)
+tablaFlot4$Tiempo <- tablaFlot4$Tiempo %>% str_remove_all("\\[|\\]")
+tablaFlot4$Dia <- substr(tablaFlot4$Tiempo, 1, 2)
+tablaFlot4$Hora <- substr(tablaFlot4$Tiempo, 4, 11)
 tablaFlot4$Bytes <- ifelse(tablaFlot4$Respuesta == 404, 0, tablaFlot4$Bytes)
 tablaFlot4$Bytes <- ifelse(tablaFlot4$Respuesta == 302, 1, tablaFlot4$Bytes)
 tablaFlot4$Bytes <- ifelse(tablaFlot4$Respuesta == 403, 2, tablaFlot4$Bytes)
@@ -131,9 +133,29 @@ tablaFlot4$Bytes <- ifelse(tablaFlot4$Respuesta == 501, 3, tablaFlot4$Bytes)
 tablaFlot4$Bytes <- ifelse(tablaFlot4$Respuesta == 400, 4, tablaFlot4$Bytes)
 tablaFlot4$Bytes <- as.numeric(tablaFlot4$Bytes)
 tablaFlot4$Dia <- as.numeric(tablaFlot4$Dia)
-# Assuming 'Hora' is a character vector and the format is YYYY-MM-DD HH:MM:SS
-tablaFlot4$Tiempo <- tablaFlot4$Tiempo %>%
-  str_remove_all("\\[|\\]")
-tablaFlot4$Hora_POSIXct <- as.POSIXct(tablaFlot4$Tiempo, format = "DD %H:%M:%S")
+```
+
+2/. Identificar el número único de usuarios que han interactuado directamente con el servidor de forma segregada según si los usuarios han tenido algún tipo de error en las distintas peticiones ofrecidas por el servidor.
+
+```{r , echo=T}
+# El codigo 404: indica que la página solicitada por el usuario no se encontró en el servidor
+# El codigo 302: indica que una URL específica ha sido trasladada temporalmente a una nueva ubicación
+# El codigo 403: indica que el acceso a la página o al dominio solicitado está restringido
+# El codigo 501: indica que el servidor no soporta la funcionalidad necesaria para satisfacer la solicitud
+# El codigo 400: indica que el servidor no puede o no procesará la solicitud debido a algo que se percibe como un error del cliente
+# El codigo 500: indica que algo ha ido mal en el servidor del sitio web
+# El codigo 304: indica que la página web que buscaste no ha cambiado desde la última vez que accediste a ella
+# El codigo 200: Respuesta exitosa
+unique(tablaFlot4$Respuesta == 200 & tablaFlot4$Origen)
+length(unique(tablaFlot4$Respuesta == 200))
+
+frequency_table <- table(tablaFlot4$Respuesta)
+frequency_data_frame <- as.data.frame(frequency_table)
+names(frequency_data_frame)[1] <- "Valor"
+names(frequency_data_frame)[2] <- "Frecuencia"
+# Create the bar graph using 'ggplot2'
+ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Frecuencia de 200, 400 y 500 en 'columna'", x = "Valor", y = "Frecuencia")
 
 ```
