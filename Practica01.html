@@ -455,6 +455,36 @@ transmitido, en peticiones de descarga de ficheros de texto “.txt”?</p>
 petición en 3 partes (Tipo, URL, Protocolo) ¿Cuantas peticiones NO
 tienen como protocolo “HTTP/0.2”?</p>
 <p>RSPT: Son en total 47747 peticiones.</p>
+<p><strong>Limpieza de los Datos</strong></p>
+<p>1/. Aprovechando que los datos a analizar son los mismos de la
+primera práctica, para esta entrega es imprescindible que los datos
+estén en formato de “datos elegantes”.</p>
+<pre class="r"><code>tablaFlot4 &lt;- epa_http
+colnames(tablaFlot4) &lt;- c(&quot;Origen&quot;,&quot;Tiempo&quot;,&quot;Peti&quot;, &quot;URL&quot;, &quot;Version&quot;,&quot;Respuesta&quot;,&quot;Bytes&quot;)
+tablaFlot4$Dia &lt;- substr(tablaFlot4$Tiempo, 2, 3)
+tablaFlot4$Hora &lt;- substr(tablaFlot4$Tiempo, 5, 12)
+tablaFlot4$Bytes &lt;- ifelse(tablaFlot4$Respuesta == 404, 0, tablaFlot4$Bytes)
+tablaFlot4$Bytes &lt;- ifelse(tablaFlot4$Respuesta == 302, 1, tablaFlot4$Bytes)
+tablaFlot4$Bytes &lt;- ifelse(tablaFlot4$Respuesta == 403, 2, tablaFlot4$Bytes)
+tablaFlot4$Bytes &lt;- ifelse(tablaFlot4$Respuesta == 501, 3, tablaFlot4$Bytes)
+tablaFlot4$Bytes &lt;- ifelse(tablaFlot4$Respuesta == 400, 4, tablaFlot4$Bytes)
+#tablaFlot4$Dia &lt;- as.Date(tablaFlot4$Dia)
+#tablaFlot4$Hora &lt;- substr(tablaFlot4$Tiempo, nchar(tablaFlot4$Tiempo) - 3, nchar(tablaFlot4$Tiempo))
+tablaFlot4</code></pre>
+<pre><code>## # A tibble: 47,748 × 9
+##    Origen                 Tiempo Peti  URL   Version Respuesta Bytes Dia   Hora 
+##    &lt;chr&gt;                  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 141.243.1.172          [29:2… &quot;\&quot;G… /Sof… &quot;HTTP/…       200 1497  29    23:5…
+##  2 query2.lycos.cs.cmu.e… [29:2… &quot;\&quot;G… /Con… &quot;HTTP/…       200 1325  29    23:5…
+##  3 tanuki.twics.com       [29:2… &quot;\&quot;G… /New… &quot;HTTP/…       200 1014  29    23:5…
+##  4 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /     &quot;HTTP/…       200 4889  29    23:5…
+##  5 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /ico… &quot;HTTP/…       200 2624  29    23:5…
+##  6 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /log… &quot;HTTP/…       200 935   29    23:5…
+##  7 140.112.68.165         [29:2… &quot;\&quot;G… /log… &quot;HTTP/…       200 2788  29    23:5…
+##  8 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /log… &quot;HTTP/…       200 124   29    23:5…
+##  9 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /ico… &quot;HTTP/…       200 156   29    23:5…
+## 10 wpbfl2-45.gate.net     [29:2… &quot;\&quot;G… /log… &quot;HTTP/…       200 2788  29    23:5…
+## # ℹ 47,738 more rows</code></pre>
 </div>
 
 
