@@ -146,8 +146,8 @@ tablaFlot4$Dia <- as.numeric(tablaFlot4$Dia)
 # El codigo 500: indica que algo ha ido mal en el servidor del sitio web
 # El codigo 304: indica que la página web que buscaste no ha cambiado desde la última vez que accediste a ella
 # El codigo 200: Respuesta exitosa
-unique(tablaFlot4$Respuesta == 200 & tablaFlot4$Origen)
-length(unique(tablaFlot4$Respuesta == 200))
+#unique(tablaFlot4$Respuesta)
+#length(unique(tablaFlot4$Respuesta))
 
 frequency_table <- table(tablaFlot4$Respuesta)
 frequency_data_frame <- as.data.frame(frequency_table)
@@ -156,6 +156,26 @@ names(frequency_data_frame)[2] <- "Frecuencia"
 # Create the bar graph using 'ggplot2'
 ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
   geom_bar(stat = "identity") +
-  labs(title = "Frecuencia de 200, 400 y 500 en 'columna'", x = "Valor", y = "Frecuencia")
+  labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
+```
 
+3/. AnalizarlosdistintostiposdepeticionesHTTP(GET,POST,PUT,DELETE) gestionadas por el servidor, identificando la frecuencia de cada una de estas. Repetir el análisis, esta vez filtrando previamente aquellas peticiones correspondientes a recursos ofrecidos de tipo imagen.
+
+```{r , echo=T}
+frequency_table <- table(tablaFlot4$Peti)
+frequency_data_frame <- as.data.frame(frequency_table)
+names(frequency_data_frame)[1] <- "Valor"
+names(frequency_data_frame)[2] <- "Frecuencia"
+# Create the bar graph using 'ggplot2'
+ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
+```
+
+**Visualización de Resultados**
+
+1/. Generar al menos 2 gráficos distintos que permitan visualizar alguna característica relevante de los datos analizados.
+
+```{r , echo=T}
+#barplot(tablaFlot4$Version, names.arg = tablaFlot4$Respuesta)
 ```
