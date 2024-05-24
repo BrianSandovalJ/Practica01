@@ -180,9 +180,9 @@ ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
   labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
 ```
 
-3/. Generar al menos 2 gráficos distintos que permitan visualizar alguna característica relevante de los datos analizados.
+4/. Generar al menos 2 gráficos distintos que permitan visualizar alguna característica relevante de los datos analizados.
 
-Mostar los 4 origenes con mas bytes generados
+- Mostar los 4 origenes con mas bytes generados
 
 ```{r , echo=F}
 soloIP <- grep("^(1|2|3)", tablaFlot4$Origen)
@@ -196,7 +196,7 @@ maximos <- datos_ordenados[1:4, c("Origen", "Bytes", "URL")]
 htmlTable(maximos)
 ```
 
-Cantidad de bytes con archivos .zip
+- Cantidad de bytes con archivos .zip
 
 ```{r , echo=F}
 soloZIP <- grep(".zip$", tablaFlot4$URL)
@@ -210,6 +210,16 @@ ggplot(datos_ordenados, aes(x = reorder(URL, +Bytes), y = Bytes)) +
   coord_flip() +
   labs(title = "Gráfico de Barras Ordenado de Bytes", x = "DOC", y = "Bytes") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+5/. Generar un gráfico que permita visualizar el número de peticiones servidas a lo largo del tiempo.
+
+```{r , echo=F}
+ggplot(tablaFlot4, aes(x = tablaFlot4$Dia, y = tablaFlot4$Peti)) +
+  geom_line(color = "blue") +
+  geom_point(color = "red") +
+  labs(title = "Número de Peticiones Servidas a lo Largo del Tiempo", x = "Fecha", y = "Peticiones") +
+  theme_minimal()
 ```
 
 **Clústering de datos**
