@@ -164,7 +164,7 @@ ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
   labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
 ```
 
-3/. AnalizarlosdistintostiposdepeticionesHTTP(GET,POST,PUT,DELETE) gestionadas por el servidor, identificando la frecuencia de cada una de estas. Repetir el análisis, esta vez filtrando previamente aquellas peticiones correspondientes a recursos ofrecidos de tipo imagen.
+3/. Analizar los distintostiposdepeticionesHTTP(GET,POST,PUT,DELETE) gestionadas por el servidor, identificando la frecuencia de cada una de estas. Repetir el análisis, esta vez filtrando previamente aquellas peticiones correspondientes a recursos ofrecidos de tipo imagen.
 
 ```{r , echo=T}
 frequency_table <- table(tablaFlot4$Peti)
@@ -175,6 +175,23 @@ names(frequency_data_frame)[2] <- "Frecuencia"
 ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
   geom_bar(stat = "identity") +
   labs(title = "Frecuencia observada", x = "Valor", y = "Frecuencia")
+```
+
+3/. Generar al menos 2 gráficos distintos que permitan visualizar alguna característica relevante de los datos analizados.
+
+Mostar los 4 origenes con mas bytes generados
+
+```{r , echo=T}
+soloIP <- grep("^(1|2|3)", tablaFlot4$Origen)
+datos_IP <- tablaFlot4[soloIP, ]
+datos_IP <- as.data.frame(datos_IP)
+
+datos_ordenados <- datos_IP[order(-datos_IP$Bytes), ]
+
+maximos <- datos_ordenados[1:4, c("Origen", "Bytes", "URL")]
+
+htmlTable(maximos)
+
 ```
 
 **Clústering de datos**
