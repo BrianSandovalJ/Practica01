@@ -142,7 +142,7 @@ tablaFlot4$Dia <- as.numeric(tablaFlot4$Dia)
 
 2/. Identificar el número único de usuarios que han interactuado directamente con el servidor de forma segregada según si los usuarios han tenido algún tipo de error en las distintas peticiones ofrecidas por el servidor.
 
-```{r , echo=T}
+```{r CodError, echo=T}
 # El codigo 404: indica que la página solicitada por el usuario no se encontró en el servidor
 # El codigo 302: indica que una URL específica ha sido trasladada temporalmente a una nueva ubicación
 # El codigo 403: indica que el acceso a la página o al dominio solicitado está restringido
@@ -151,6 +151,9 @@ tablaFlot4$Dia <- as.numeric(tablaFlot4$Dia)
 # El codigo 500: indica que algo ha ido mal en el servidor del sitio web
 # El codigo 304: indica que la página web que buscaste no ha cambiado desde la última vez que accediste a ella
 # El codigo 200: Respuesta exitosa
+```
+
+```{r , echo=F}
 #unique(tablaFlot4$Respuesta)
 #length(unique(tablaFlot4$Respuesta))
 
@@ -166,7 +169,7 @@ ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
 
 3/. Analizar los distintostiposdepeticionesHTTP(GET,POST,PUT,DELETE) gestionadas por el servidor, identificando la frecuencia de cada una de estas. Repetir el análisis, esta vez filtrando previamente aquellas peticiones correspondientes a recursos ofrecidos de tipo imagen.
 
-```{r , echo=T}
+```{r , echo=F}
 frequency_table <- table(tablaFlot4$Peti)
 frequency_data_frame <- as.data.frame(frequency_table)
 names(frequency_data_frame)[1] <- "Valor"
@@ -181,7 +184,7 @@ ggplot(frequency_data_frame, aes(x = Valor, y = Frecuencia)) +
 
 Mostar los 4 origenes con mas bytes generados
 
-```{r , echo=T}
+```{r , echo=F}
 soloIP <- grep("^(1|2|3)", tablaFlot4$Origen)
 datos_IP <- tablaFlot4[soloIP, ]
 datos_IP <- as.data.frame(datos_IP)
@@ -191,14 +194,29 @@ datos_ordenados <- datos_IP[order(-datos_IP$Bytes), ]
 maximos <- datos_ordenados[1:4, c("Origen", "Bytes", "URL")]
 
 htmlTable(maximos)
+```
 
+Cantidad de bytes con archivos .zip
+
+```{r , echo=F}
+soloZIP <- grep(".zip$", tablaFlot4$URL)
+datos_ZIP <- tablaFlot4[soloZIP, ]
+datos_ZIP <- as.data.frame(datos_ZIP)
+
+datos_ordenados <- datos_ZIP[order(-datos_ZIP$Bytes), ]
+
+ggplot(datos_ordenados, aes(x = reorder(URL, +Bytes), y = Bytes)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  coord_flip() +
+  labs(title = "Gráfico de Barras Ordenado de Bytes", x = "DOC", y = "Bytes") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 **Clústering de datos**
 
 1/. Utilizando un algoritmo de aprendizaje no supervisado, realizad un análisis de clústering con k-means para los datos del servidor.
 
-```{r , echo=T}
+```{r , echo=F}
 tablaji <- epa_http_one_hot  # Assuming tablaFlot4 is your data frame
 
 
@@ -223,22 +241,16 @@ data_onehot$URL <- NULL
 data_onehot$Version <- NULL
 
 perform_kmeans <- function(k) {
-  # Perform k-means clustering using the one-hot encoded data
   kmeans_results <- kmeans(data_onehot[, -1], centers = k)
 
-  # Assign cluster labels to data points
   data_onehot$cluster <- as.factor(kmeans_results$cluster)
 
-  # Print the cluster labels
-  #print(data_onehot$cluster)
-  ggplot2::ggplot(data_onehot, aes(x = data_onehot$resourceLenght, data_onehot$Bytes, colour = data_onehot$cluster)) +
+  ggplot2::ggplot(data_onehot, aes(x = resourceLenght, Bytes, colour = cluster)) +
     geom_point(alpha = 0.2) +
     ggtitle(paste("EPA server logs K-means analysis", k, "cluster"))
 }
 
 perform_kmeans(3)
-#summary(data_onehot)
-
 
 ```
 
